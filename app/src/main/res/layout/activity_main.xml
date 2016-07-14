@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+
+
+    >
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="apnaVaidya"
+        android:visibility="visible"
+        android:id="@+id/textView"
+        android:textColor="#673385"
+        android:textSize="35dip"
+        android:layout_alignParentTop="true"
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button" />
+    <AutoCompleteTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/autoText"
+        android:hint="enter disease or symptom"
+        android:textColorHint="#357948"
+        android:textColor="#2c0910"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    <ImageButton
+        android:id="@+id/button"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/buttonoval"
+        android:elevation="8dp"
+        android:src="@drawable/ic_add_black_24dp"
+        android:layout_marginBottom="93dp"
+        android:layout_above="@+id/button3"
+        android:visibility="invisible"
+        android:layout_alignStart="@+id/button3" />
+
+    <!--co.hkm.soltag.TagContainerLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tagcontainerLayout"
+        app:container_enable_drag="true"
+        app:tag_clickable="true"
+        app:tag_theme="pure_teal"
+        android:paddingTop="50dp"
+        android:layout_below="@+id/autoText"
+        android:layout_alignParentStart="false"
+        android:scrollIndicators="right" />-->
+
+
+    <com.ns.developer.tagview.widget.TagCloudLinkView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/cloudlinked"
+        android:layout_width="500px"
+        android:layout_height="1200px"
+        android:padding="2dp"
+        app:isDeletable="true"
+        app:tagLayoutColor="#66CCFF"
+        app:tagTextSize="7sp"
+        app:tag_theme="pure_cyan"
+        android:paddingTop="2dp"
+        android:layout_below="@+id/autoText"
+
+        app:tagTextColor="#000000"
+        app:paddingEnd="2dp"
+        app:paddingStart="2dp"
+
+        app:deletableTextSize="10sp"
+        app:deletableTextColor="#FF0000"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Suggestion"
+        android:id="@+id/button3"
+        android:height="5dp"
+        android:maxLength="10"
+        android:layout_alignBottom="@+id/autoText"
+        android:layout_toRightOf="@+id/autoText"
+        android:layout_alignTop="@+id/autoText" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Log Out"
+        android:id="@+id/button5"
+        android:onClick="logout"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/button3"
+        android:layout_alignEnd="@+id/button3" />
+    <!--android:layout_alignEnd="@+id/button"--> />
+    <!--<ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="invisible"
+        android:layout_below="@+id/button3"
+        />-->
+
+
+
+
+</RelativeLayout>

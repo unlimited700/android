@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_tab_pressed">
+
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/recomtabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dip"
+
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/recompager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recomtabs"
+        tools:context=".RecomendationActivity"
+        />
+
+</RelativeLayout>
