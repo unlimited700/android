@@ -43,7 +43,6 @@ dependencies {
 }
 
 dependencies {
-    compile 'com.shamanland:facebook-android-sdk:3.15.0-SNAPSHOT'
 
     compile (
             [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.4.1'],
