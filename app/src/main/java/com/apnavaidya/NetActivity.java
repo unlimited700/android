@@ -12,6 +12,7 @@ import android.widget.Button;
 public class NetActivity extends AppCompatActivity {
 
     Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,11 +24,11 @@ public class NetActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 ConnectivityManager cm =
-                        (ConnectivityManager)getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                        (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
                 NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
                 boolean isConnected = activeNetwork != null &&
-                        activeNetwork.isConnected() &&  activeNetwork.isAvailable();
+                        activeNetwork.isConnected() && activeNetwork.isAvailable();
                 if (isConnected) {
                     Intent intent = new Intent(getApplicationContext(), SplashScreen.class);
                     startActivity(intent);

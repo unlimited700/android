@@ -9,27 +9,24 @@ import java.util.Map;
  */
 public class ProblemList {
 
-    static ArrayList<String> problemList=null;
-    static Map<Integer,String> fragmentMap=new HashMap<>();
-    void setProblemList(ArrayList<String> problemList)
-    {
-        this.problemList=problemList;
-    }
-    ArrayList<String> getProblemList()
-    {
-     return problemList;
+    static ArrayList<String> problemList = null;
+    static Map<Integer, String> fragmentMap = new HashMap<>();
+
+    void setProblemList(ArrayList<String> problemList) {
+        this.problemList = problemList;
     }
 
-    void dataCheck(int n,String fragmentName)
-    {
-       fragmentMap.put(n,fragmentName);
+    ArrayList<String> getProblemList() {
+        return problemList;
     }
 
-    Map<Integer,String> getdataCheck()
-    {
-      return fragmentMap;
+    void dataCheck(int n, String fragmentName) {
+        fragmentMap.put(n, fragmentName);
     }
 
+    Map<Integer, String> getdataCheck() {
+        return fragmentMap;
+    }
 
 
 }

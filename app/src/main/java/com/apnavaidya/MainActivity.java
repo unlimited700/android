@@ -12,11 +12,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -59,20 +62,23 @@ public class MainActivity extends Activity {
     private AutoCompleteTextView editText;
     String boyPart = null;
     ArrayList<String> problemList = null;
-    String[] body_parts = {"throat"};
+    String[] body_parts;
     String yoga = null, step = null, days = null, soltype = null, duration = null;
     Set<String> bodyProblems = new TreeSet<>();
     Button solutionButton = null;
-    List<Tag> problemtaglist = null;
+    String[] problemtaglist = new String[]{};
     Button b;
-
+    private int solnbuttonclicked = 0;
     SharedPreferences sharedpreferences;
     int responsecode = 200;
+
+    HorizontialListView listview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        listview =  (HorizontialListView) findViewById(R.id.listview);
         //   progressBar = (ProgressBar) findViewById(R.id.progressBar);
         //sharedpreferences = getSharedPreferences("myPrefs", Context.MODE_WORLD_READABLE);
         //sharedpreferences = getApplicationContext().getSharedPreferences("MyPref", 0);
@@ -86,13 +92,70 @@ public class MainActivity extends Activity {
         editText = (AutoCompleteTextView) findViewById(R.id.autoText);
         ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, body_parts);
         editText.setAdapter(adapter);
-        editText.setThreshold(3);
+        editText.setThreshold(2);
         //   problemList= (ArrayList)Arrays.asList(body_parts);
+
+
+        listview.setAdapter(mAdapter);
+
+        listview.setOnItemClickListener(
+                new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Toast.makeText(getApplicationContext(), "Clicked " + position, Toast.LENGTH_SHORT).show();
+                        remove(position);
+                        listview.setAdapter(mAdapter);
+                    }
+                }
+        );
+
         ActiveTools();
 
 
     }
 
+    public void remove(int pos) {
+        String[] clone = new String[problemtaglist.length - 1];
+
+        if (problemtaglist.length == 1) {
+            problemtaglist = new String[]{};
+        } else {
+            for (int i = 0, j = 0; i < problemtaglist.length; i++) {
+                if (i != pos) {
+                    clone[j] = problemtaglist[i];
+                    j++;
+                }
+            }
+            problemtaglist = clone;
+        }
+    }
+
+    private BaseAdapter mAdapter = new BaseAdapter() {
+        @Override
+        public int getCount() {
+            return problemtaglist.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            final int pos = position;
+            View retval = LayoutInflater.from(parent.getContext()).inflate(R.layout.horizontial_list_view, null);
+            final Button bt = (Button) retval.findViewById(R.id.btview);
+            bt.setText(problemtaglist[position]);
+            return retval;
+        }
+
+    };
 
     public void logout(View v) {
         SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -107,9 +170,11 @@ public class MainActivity extends Activity {
     void ActiveTools() {
         final ImageButton button = (ImageButton) findViewById(R.id.button);
         solutionButton = (Button) findViewById(R.id.button3);
-       final TagCloudLinkView tagCloudLinkView = (TagCloudLinkView) findViewById(R.id.cloudlinked);
-      //  final TagContainerLayout mTagContainerLayout = (TagContainerLayout) findViewById(R.id.tagcontainerLayout);
-    //    mTagContainerLayout.setTheme(ColorFactory.PURE_CYAN);
+        //final TagCloudLinkView tagCloudLinkView = (TagCloudLinkView) findViewById(R.id.cloudlinked);
+        //  final TagContainerLayout mTagContainerLayout = (TagContainerLayout) findViewById(R.id.tagcontainerLayout);
+        //    mTagContainerLayout.setTheme(ColorFactory.PURE_CYAN);
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,12 +193,13 @@ public class MainActivity extends Activity {
                 } else {
                     editText.setText("");
                     bodyProblems.add(boyPart);
-                    List<Tag> bodyList = tagCloudLinkView.getTags();
-                    int length=tagCloudLinkView.getTags().size();
-                    if (!bodyList.contains(boyPart)) {
-                        tagCloudLinkView.add(new Tag(length+1,boyPart));
 
-                    }
+                    /*List<Tag> bodyList = tagCloudLinkView.getTags();
+                    int length = tagCloudLinkView.getTags().size();
+                    if (!bodyList.contains(boyPart)) {
+                        tagCloudLinkView.add(new Tag(length + 1, boyPart));
+
+                    }*/
                 }
             }
         });
@@ -141,7 +207,7 @@ public class MainActivity extends Activity {
         editText.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                TagCloudLinkView tagCloudLinkView = (TagCloudLinkView) findViewById(R.id.cloudlinked);
+                //TagCloudLinkView tagCloudLinkView = (TagCloudLinkView) findViewById(R.id.cloudlinked);
 
                 String selected = (String) parent.getItemAtPosition(position);
                 if (selected != null) {
@@ -157,46 +223,63 @@ public class MainActivity extends Activity {
                     return;
                 } else {
                     editText.setText("");
-                    bodyProblems.add(boyPart);
-                    List<Tag> bodyList = tagCloudLinkView.getTags();
-                    int length=tagCloudLinkView.getTags().size();
+                    String[] clone = new String[problemtaglist.length + 1];
+                    for (int i = 0; i < problemtaglist.length + 1; i++) {
+                        if (i == problemtaglist.length) {
+                            clone[i] = selected;
+                        } else {
+                            clone[i]=problemtaglist[i];
+                        }
+                    }
+                    problemtaglist=clone;
+                    listview.setAdapter(mAdapter);
+
+
+                    //bodyProblems.add(boyPart);
+                    /*List<Tag> bodyList = tagCloudLinkView.getTags();
+                    int length = tagCloudLinkView.getTags().size();
                     if (!bodyList.contains(boyPart)) {
                         tagCloudLinkView.add(new Tag(length + 1, boyPart));
-                        Log.i("tagSize: " , Integer.toString(tagCloudLinkView.getTags().size())) ;
+                        Log.i("tagSize: ", Integer.toString(tagCloudLinkView.getTags().size()));
                         tagCloudLinkView.drawTags();
-                        Log.i("cloud","checking");
+                        Log.i("cloud", "checking");
 
-                    }
+                    }*/
                 }
 
             }
         });
 
 
-
-
-
-        tagCloudLinkView.setOnTagDeleteListener(new TagCloudLinkView.OnTagDeleteListener() {
+        /*tagCloudLinkView.setOnTagDeleteListener(new TagCloudLinkView.OnTagDeleteListener() {
 
             @Override
             public void onTagDeleted(Tag tag, int i) {
-            //   tagCloudLinkView.remove(tagCloudLinkView.getTags().indexOf(tag));
+                //   tagCloudLinkView.remove(tagCloudLinkView.getTags().indexOf(tag));
             }
-        });
+        });*/
 
         solutionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                problemtaglist = tagCloudLinkView.getTags();
-                if (problemtaglist == null || problemtaglist.isEmpty()) {
-                    Toast.makeText(getApplicationContext(),
-                            "no problem added",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                //     progressBar.setVisibility(View.VISIBLE);
-                new RetrieveFeedTask().execute();
+                if (solnbuttonclicked == 0) {
+                    /*problemtaglist = tagCloudLinkView.getTags();
+                    if (problemtaglist == null || problemtaglist.isEmpty()) {
+                        Toast.makeText(getApplicationContext(),
+                                "no problem added",
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    //     progressBar.setVisibility(View.VISIBLE);*/
 
+                    if (problemtaglist.length==0) {
+                        Toast.makeText(getApplicationContext(), "no problem added", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    new RetrieveFeedTask().execute();
+                    solnbuttonclicked = 1;
+                }
             }
         });
     }
@@ -250,6 +333,7 @@ public class MainActivity extends Activity {
                         days = recommendedFoodJson.getJSONObject(i).get("days").toString();
                         //recommendedFood.add("daily " + duration + " min for " + days + " days");
                         foodHashMap.put(yoga, recommendedFood);
+                        solnbuttonclicked = 0;
 
                     }
                 }
@@ -261,8 +345,9 @@ public class MainActivity extends Activity {
                         step = recommendedRemediesJson.getJSONObject(i).get("step").toString();
                         recommendedRemedies.add(step);
                         days = recommendedRemediesJson.getJSONObject(i).get("days").toString();
-                       // recommendedRemedies.add("daily " + duration + " min for " + days + " days");
+                        // recommendedRemedies.add("daily " + duration + " min for " + days + " days");
                         remedyHashmap.put(yoga, recommendedRemedies);
+                        solnbuttonclicked = 0;
 
                     }
                 }
@@ -278,6 +363,7 @@ public class MainActivity extends Activity {
                         days = recommendedYogaJson.getJSONObject(i).get("days").toString();
                         recommendedYoga.add("daily " + duration + " min for " + days + " days");
                         yogaHAshMap.put(yoga, recommendedYoga);
+                        solnbuttonclicked = 0;
 
                     }
                 }
@@ -367,8 +453,8 @@ public class MainActivity extends Activity {
 
                     urlConnection.connect();
                     JSONArray jsonArray = new JSONArray();
-                    for (int i = 0; i < problemtaglist.size(); i++) {
-                        jsonArray.put(i, problemtaglist.get(i).getText());
+                    for (int i = 0; i < problemtaglist.length; i++) {
+                        jsonArray.put(i, problemtaglist[i]);
                     }
                     JSONObject jsonParam = new JSONObject();
                     jsonParam.put("problems", jsonArray);

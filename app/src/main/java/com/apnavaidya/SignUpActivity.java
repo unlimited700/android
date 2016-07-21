@@ -49,6 +49,8 @@ public class SignUpActivity extends Activity {
     private String genderString;
     JSONObject jsonObject1 = new JSONObject();
 
+    private static int signupbuttonclicked = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,16 +69,38 @@ public class SignUpActivity extends Activity {
             Toast.makeText(getApplicationContext(), "enter valid email", Toast.LENGTH_SHORT);
             return;
         }*/
+        if(Integer.parseInt(age.getText().toString())>100)
+        {
+            Toast.makeText(getApplicationContext(),"Enter a valid age",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(password.getText().toString().length()<5)
+        {
+            Toast.makeText(getApplicationContext(),"Enter a valid password(Longer than 5 char)",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(password.getText().toString().compareTo(confirmPas.getText().toString())!=0)
+        {
+            Toast.makeText(getApplicationContext(),"Entered passwords do not match",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(phone.getText().toString().length()!=10)
+        {
+            Toast.makeText(getApplicationContext(),"Enter a valid phone no.(10 digits)",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(signupbuttonclicked == 0) {
+            int selectedId = genderRadiogroup.getCheckedRadioButtonId();
+            radioSexButton = (RadioButton) findViewById(selectedId);
+            genderString = (String) radioSexButton.getText();
+            new SignUpTask().execute();
+        }
+        signupbuttonclicked = 1;
 
-        int selectedId = genderRadiogroup.getCheckedRadioButtonId();
-        radioSexButton = (RadioButton) findViewById(selectedId);
-        genderString = (String) radioSexButton.getText();
-        new SignUpTask().execute();
     }
 
-    public void signin(View view)
-    {
-        Intent intent=new Intent(getApplicationContext(),LoginPage.class);
+    public void signin(View view) {
+        Intent intent = new Intent(getApplicationContext(), LoginPage.class);
         startActivity(intent);
         finish();
     }
@@ -90,7 +114,7 @@ public class SignUpActivity extends Activity {
         confirmPas = (EditText) findViewById(R.id.confirmpasswordET);
         email = (EditText) findViewById(R.id.emailET);
         genderRadiogroup = (RadioGroup) findViewById(R.id.radiogroup);
-        signup = (Button) findViewById(R.id.button4);
+        signup = (Button) findViewById(R.id.button4); 
     }
 
     class SignUpTask extends AsyncTask<Void, Void, String> {
@@ -117,10 +141,10 @@ public class SignUpActivity extends Activity {
             } catch (Exception e) {
             }
 
+            Toast.makeText(getApplicationContext(), "signUp complete", Toast.LENGTH_SHORT).show();
+            signupbuttonclicked = 1;
             Intent intent = new Intent(getApplicationContext(), LoginPage.class);
-
             startActivity(intent);
-            Toast.makeText(getApplicationContext(), "signUp complete", Toast.LENGTH_SHORT);
             finish();
         }
 
@@ -192,6 +216,7 @@ public class SignUpActivity extends Activity {
         }
 
         void feeddata(SignUpRequest signUpRequest) {
+
             try {
 
                 signUpRequest.setAge(Integer.parseInt(age.getText().toString()));

@@ -46,7 +46,7 @@ public class Accordion extends AppCompatActivity {
 
 
     void ActiveTools()
-    {   final Button button=(Button)findViewById(R.id.button);
+    {   //final Button button=(Button)findViewById(R.id.button);
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
