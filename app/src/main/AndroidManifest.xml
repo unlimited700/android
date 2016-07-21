@@ -17,11 +17,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:logo="@drawable/app_icon"
+            android:name=".MainActivity"
             android:label=" "
-            android:name=".MainActivity" />
+            android:logo="@drawable/app_icon" />
 
-            <!--android:theme="@style/MyAnimation"-->
+        <!-- android:theme="@style/MyAnimation" -->
 
         <activity android:name=".RecomendationActivity" />
         <activity android:name=".LoginPage" />
@@ -30,7 +30,7 @@
         <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
